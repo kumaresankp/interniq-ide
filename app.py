@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, request, jsonify
 import subprocess
 import os
 import tempfile
 
-app = Flask(__name__)
+# Initialize the Flask application with a custom static folder
+app = Flask(__name__, static_folder='public', static_url_path='/')
 
 @app.route('/')
 def index():
@@ -47,6 +48,5 @@ def execute_code():
     
     return jsonify({'output': output})
     
-    return jsonify({'output': output})
 if __name__ == '__main__':
     app.run(debug=True)
