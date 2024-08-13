@@ -4,7 +4,7 @@ import os
 import tempfile
 
 # Initialize the Flask application with a custom static folder
-app = Flask(__name__, static_folder='public', static_url_path='/')
+app = Flask(__name__)
 
 @app.route('/')
 def index():
