@@ -3,7 +3,7 @@ let editor;
 window.onload = function() {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/c_cpp"); // Default to C/C++
+    editor.session.setMode("ace/mode/python"); // Default to C/C++
 
     // Enable auto-completion
     ace.require("ace/ext/language_tools");
