@@ -9,6 +9,26 @@
     <script src="{{ url_for('static', filename='js/lib/ace.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/theme-monokai.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ide.js') }}"></script>
+    <!-- Ace Editor Core -->
+
+<!-- Language Modes -->
+<script src="{{ url_for('static', filename='js/lib/mode-c_cpp.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/mode-python.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/mode-javascript.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/mode-php.js') }}"></script>
+
+<!-- Extensions -->
+<script src="{{ url_for('static', filename='js/lib/ext-language_tools.js') }}"></script>
+
+<!-- Snippets -->
+<script src="{{ url_for('static', filename='js/lib/snippets/javascript.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/snippets/python.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/snippets/c_cpp.js') }}"></script>
+<script src="{{ url_for('static', filename='js/lib/snippets/php.js') }}"></script>
+
+<!-- Custom Snippets (if any) -->
+<script src="{{ url_for('static', filename='js/lib/your_custom_snippets.js') }}"></script>
+
 </head>
 <body>
     <div class="header">InternIQ Online IDE</div>
@@ -22,7 +42,7 @@
                 <div class="control-panel">
                     Select Language:
                     &nbsp; &nbsp;
-                    <select id="languages" class="languages" onchange="changeLanguage()">
+                    <select id="languages" class="languages">
                         <option value="c">C</option>
                         <option value="cpp">C++</option>
                         <option value="python">Python</option>
@@ -35,13 +55,14 @@
                 </div>
             </div>
             <div id="output-section" class="output-section" style="display: none;">
-                <h2 class="output-header">Output:</h2>
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading...</p>
-                </div>
-                <div class="output"></div>
-            </div>
+    <h2 class="output-header">Output:</h2>
+    <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+    <div class="output"></div>
+</div>
+
         </div>
     </div>
     <script>
@@ -56,31 +77,30 @@
         }
 
         function executeCode() {
-            $('#input-section').hide();
-            $('.loading').show(); // Show the spinner
-            $('.output').hide();  // Hide the output section initially
-            
-            $.ajax({
-                url: "/execute",
-                method: "POST",
-                data: {
-                    language: $("#languages").val(),
-                    code: editor.getSession().getValue()
-                },
-                success: function(response) {
-                    $('.output').text(response.output).show(); // Show the output
-                    showOutput(); // Display the output section
-                },
-                complete: function() {
-                    $('.loading').hide(); // Hide the spinner
-                },
-                error: function() {
-                    $('.output').text("An error occurred while executing the code.").show(); // Display error message
-                    $('.loading').hide(); // Hide the spinner
-                    showOutput(); // Display the output section
-                }
-            });
+    $('#input-section').hide();
+    $('.loading').show(); // Show the spinner
+    $('.output').hide();  // Hide the output section initially
+    
+    $.ajax({
+        url: "/execute",
+        method: "POST",
+        data: {
+            language: $("#languages").val(),
+            code: editor.getSession().getValue()
+        },
+        success: function(response) {
+            $('.loading').hide(); // Hide the spinner after receiving the response
+            $('.output').text(response.output).show(); // Show the output
+            showOutput(); // Display the output section
+        },
+        error: function() {
+            $('.loading').hide(); // Hide the spinner in case of an error
+            $('.output').text("An error occurred while executing the code.").show(); // Display error message
+            showOutput(); // Display the output section
         }
+    });
+}
+
     </script>
 </body>
 </html>
